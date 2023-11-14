@@ -10,7 +10,6 @@
 ```
 docker compose build
 docker compose run web rails db:create
-
 ```
 
 起動
