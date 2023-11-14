@@ -1,24 +1,28 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## FP相談アプリケーション
 
-Things you may want to cover:
+### 起動方法
 
-* Ruby version
+以下コマンドは初回のみ
+```
+docker compose build
+docker compose run web rails db:create
 
-* System dependencies
+```
 
-* Configuration
+起動
+```
+docker compose up 
+```
 
-* Database creation
+バックグラウンド実行
+```
+docker compose up -d 
+```
 
-* Database initialization
+Gemfileを更新した場合はBuildから行う
 
-* How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
 
-* ...
