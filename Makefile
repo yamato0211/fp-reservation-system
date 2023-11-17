@@ -39,6 +39,10 @@ logs:
 routes:
 	docker compose run web rails routes
 
+# rubocop auto correct
+lint-fix:
+	docker compose run web rubocop --auto-correct
+
 # 'make generate'に続く引数をキャッチするための特別なターゲット
 %:
 	@:

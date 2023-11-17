@@ -10,34 +10,45 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_17_020346) do
-  create_table "financial_planners", charset: "utf8mb4", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "name", null: false
-    t.string "description", null: false
-    t.string "qualification", null: false
-    t.index ["email"], name: "index_financial_planners_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_financial_planners_on_reset_password_token", unique: true
+ActiveRecord::Schema[7.0].define(version: 20_231_117_060_612) do
+  create_table 'financial_planners', charset: 'utf8mb4', force: :cascade do |t|
+    t.string 'email', default: '', null: false
+    t.string 'encrypted_password', default: '', null: false
+    t.string 'reset_password_token'
+    t.datetime 'reset_password_sent_at'
+    t.datetime 'remember_created_at'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.string 'name', null: false
+    t.string 'description', null: false
+    t.string 'qualification', null: false
+    t.index ['email'], name: 'index_financial_planners_on_email', unique: true
+    t.index ['reset_password_token'], name: 'index_financial_planners_on_reset_password_token', unique: true
   end
 
-  create_table "users", charset: "utf8mb4", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "name", null: false
-    t.string "description", null: false
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  create_table 'time_slots', charset: 'utf8mb4', force: :cascade do |t|
+    t.date 'date'
+    t.time 'start_time'
+    t.time 'end_time'
+    t.bigint 'financial_planner_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['financial_planner_id'], name: 'index_time_slots_on_financial_planner_id'
   end
 
+  create_table 'users', charset: 'utf8mb4', force: :cascade do |t|
+    t.string 'email', default: '', null: false
+    t.string 'encrypted_password', default: '', null: false
+    t.string 'reset_password_token'
+    t.datetime 'reset_password_sent_at'
+    t.datetime 'remember_created_at'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.string 'name', null: false
+    t.string 'description', null: false
+    t.index ['email'], name: 'index_users_on_email', unique: true
+    t.index ['reset_password_token'], name: 'index_users_on_reset_password_token', unique: true
+  end
+
+  add_foreign_key 'time_slots', 'financial_planners'
 end
