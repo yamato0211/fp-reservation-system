@@ -18,6 +18,10 @@ RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 3000
 
+# install node
+RUN apt-get update
+RUN apt-get -y install nodejs npm
+
 # Start the main process.
 CMD ["rails", "server", "-b", "0.0.0.0"]
 

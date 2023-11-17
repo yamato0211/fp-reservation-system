@@ -4,8 +4,19 @@
   <%= link_to t("ログアウト"), destroy_financial_planner_session_path, data: { turbo_method: :delete } %>
 </nav>
 
-<h3>top page</h3>
-<p>Welcome, <%= current_financial_planner["name"] %>!</p>
-<%= current_financial_planner["description"] %>
-<%= current_financial_planner["qualification"] %>
-<%= current_financial_planner["email"] %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 text-center">
+      <h1>予約画面</h1>
+      <p>3ヶ月先まで予約することができます。</p>
+    </div>
+    <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+      Action
+    </button>
+    <div class="col-12 mt-3">
+      <%= week_calendar events: @time_slots do |date, time_slots| %>
+        <%= date.day %>
+      <% end %>
+    </div>
+  </div>
+</div>
