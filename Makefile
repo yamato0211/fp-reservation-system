@@ -35,6 +35,10 @@ console:
 logs:
 	docker compose logs -f
 
+# rails routes
+routes:
+	docker compose run web rails routes
+
 # 'make generate'に続く引数をキャッチするための特別なターゲット
 %:
 	@:
