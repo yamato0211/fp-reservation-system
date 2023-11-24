@@ -28,7 +28,7 @@
         <%= date.day %>
         <br>
         <% if date.wday != 0 %>
-        <%= link_to destroy_all_time_slots_path(date: date, financial_planner_id: current_financial_planner.id), data: { confirm: '本当にリセットしますか？', turbo_method: :delete } do  %>
+        <%= link_to destroy_all_time_slots_path(date: date, financial_planner_id: current_financial_planner.id), data: { turbo_confirm: '本当にリセットしますか？', turbo_method: :delete } do  %>
           <button class="btn btn-danger">リセット</button>
         <% end %>
         <% end %>
