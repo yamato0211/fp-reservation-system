@@ -5,17 +5,21 @@
 </nav>
 
 <div class="container">
+  <%= alert %>
   <div class="row">
     <div class="col-12 text-center">
-      <h1>予約画面</h1>
-      <p>3ヶ月先まで予約することができます。</p>
+      <h1>登録画面</h1>
+      <p>3ヶ月先まで登録することができます。</p>
     </div>
-    <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-      Action
-    </button>
     <div class="col-12 mt-3">
-      <%= week_calendar events: @time_slots do |date, time_slots| %>
+      <%= week_calendar(number_of_weeks: 1) do |date| %>
         <%= date.day %>
+        <br>
+        <% if date.wday != 0 %>
+        <%= link_to destroy_all_time_slots_path(date: date, financial_planner_id: current_financial_planner.id), data: { confirm: '本当にリセットしますか？', turbo_method: :delete } do  %>
+          <button class="btn btn-danger">リセット</button>
+        <% end %>
+        <% end %>
       <% end %>
     </div>
   </div>
