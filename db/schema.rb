@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_17_073215) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_22_034011) do
   create_table "appointments", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "financial_planner_id", null: false
@@ -40,11 +40,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_17_073215) do
 
   create_table "time_slots", charset: "utf8mb4", force: :cascade do |t|
     t.date "date"
-    t.time "start_time"
-    t.time "end_time"
+    t.string "start_time", null: false
     t.bigint "financial_planner_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_available", default: true
     t.index ["financial_planner_id"], name: "index_time_slots_on_financial_planner_id"
   end
 
