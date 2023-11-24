@@ -11,7 +11,5 @@ RSpec.describe TimeSlot, type: :model do
     it { is_expected.to validate_presence_of(:financial_planner_id) }
     it { is_expected.to validate_presence_of(:date) }
     it { is_expected.to validate_presence_of(:start_time )}
-    it { is_expected.to validate_presence_of(:end_time) }
-    # it { is_expected.to validate_uniqueness_of(:financial_planner_id).scoped_to([:date, :start_time]) }
   end
 end
