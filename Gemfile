@@ -80,4 +80,4 @@ gem "simple_calendar", "~> 2.4"
 gem 'dartsass-sprockets'
 gem 'bootstrap', '~> 5.3.2'
 gem 'jquery-rails'
-
+gem 'toastr_rails'
