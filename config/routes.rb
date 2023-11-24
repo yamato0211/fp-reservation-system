@@ -16,7 +16,6 @@ Rails.application.routes.draw do
 
   resources :users
   resources :financial_planners
-  resources :signup
   resource :time_slots
 
   # カスタムルートを追加
