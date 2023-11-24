@@ -10,6 +10,10 @@ build:
 run: 
 	docker compose up -d 
 
+# rails db 起動 with build
+build-run:
+	docker compose up -d --build
+
 # RSpec test
 .PHONY: test
 test:
