@@ -2,6 +2,11 @@ FROM ruby:3.1
 
 RUN mkdir /myapp
 WORKDIR /myapp
+
+# install node
+RUN apt-get update
+RUN apt-get -y install nodejs npm
+
 COPY Gemfile /myapp/Gemfile
 COPY Gemfile.lock /myapp/Gemfile.lock
 
