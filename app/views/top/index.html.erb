@@ -1,8 +1,15 @@
 <div class="container text-center">
   <h1 class="my-4">FP 予約アプリ</h1>
   
-  <div class="btn-group" role="group" aria-label="Signup Options">
+  <div class="btn-group mb-5" role="group" aria-label="Signup Options">
     <%= link_to 'FPとしてサインアップ', new_financial_planner_registration_path, class: 'btn btn-primary me-2' %>
     <%= link_to 'Userとしてサインアップ', new_user_registration_path, class: 'btn btn-success' %>
+  </div>
+
+  <br/>
+
+  <div class="btn-group" role="group" aria-label="Login Options">
+    <%= link_to 'FPとしてログイン', new_financial_planner_session_path, class: 'btn btn-primary me-2' %>
+    <%= link_to 'Userとしてログイン', new_user_session_path, class: 'btn btn-success' %>
   </div>
 </div>
