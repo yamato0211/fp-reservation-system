@@ -25,12 +25,18 @@
     </div>
     <div class="col-12 mt-3">
       <%= week_calendar(number_of_weeks: 1) do |date| %>
-        <%= date.day %>
+        <% if date.wday != 0 %>
+          <%= link_to financial_planner_time_slots_path(date: date, financial_planner_id: current_financial_planner.id), data: { turbo_method: :post, turbo_confirm: '終日登録しますか？' } do %>
+            <%= date.day %>
+          <% end %>
+        <% else %>
+          <%= date.day %>
+        <% end %>
         <br>
         <% if date.wday != 0 %>
-        <%= link_to destroy_all_time_slots_path(date: date, financial_planner_id: current_financial_planner.id), data: { turbo_confirm: '本当にリセットしますか？', turbo_method: :delete } do  %>
-          <button class="btn btn-danger">リセット</button>
-        <% end %>
+          <%= link_to financial_planner_time_slots_path(date: date, financial_planner_id: current_financial_planner.id), data: { turbo_confirm: '本当にリセットしますか？', turbo_method: :delete } do  %>
+            <button class="btn btn-danger">リセット</button>
+          <% end %>
         <% end %>
       <% end %>
     </div>

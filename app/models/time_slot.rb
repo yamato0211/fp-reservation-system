@@ -1,3 +1,31 @@
+class CreateTimeSlotValidator < ActiveModel::Validator
+  def validate(record)
+    if record.date.before?(Date.current)
+      record.errors.add :date, "過去の日付は選択できません。正しい日付を選択してください。"
+    end
+    if record.date.before?(Date.current + 1)
+      record.errors.add :date, "当日は選択できません。正しい日付を選択してください。"
+    end
+    if record.date.after?(Date.current + 3.months)
+      record.errors.add :date, "は3ヶ月以降の日付は選択できません。"
+    end
+  end
+end
+
+class DeleteTimeSlotValidator < ActiveModel::Validator
+  def validate(record)
+    if record.date.before?(Date.current)
+      record.errors.add :date, "過去の日付は選択できません。正しい日付を選択してください。"
+    end
+    if record.date.before?(Date.current + 1)
+      record.errors.add :date, "当日の予定は削除できません。"
+    end
+    if record.date.after?(Date.current + 3.months)
+      record.errors.add :date, "は3ヶ月以降の日付は選択できません。"
+    end
+  end
+end
+
 class TimeSlot < ApplicationRecord
   belongs_to :financial_planner
   has_one :appointment
@@ -6,42 +34,71 @@ class TimeSlot < ApplicationRecord
   validates :date, presence: true
   validates :start_time, presence: true
   validates :financial_planner_id, uniqueness: { scope: %i[date start_time] }
-  validate :date_before_start
-  validate :date_current_today
-  validate :date_three_month_end
 
-  def date_before_start
-    errors.add(:date, "は過去の日付は選択できません") if date < Date.current
-  end
+  # validates with
+  validates_with CreateTimeSlotValidator
+  validates_with DeleteTimeSlotValidator
 
-  def date_current_today
-    errors.add(:date, "は当日は選択できません。予約画面から正しい日付を選択してください。") if date < (Date.current + 1)
-  end
+  # const
+  SLOT_TIMES = [
+    "10:00",
+    "10:30",
+    "11:00",
+    "11:30",
+    "13:00",
+    "13:30",
+    "14:00",
+    "14:30",
+    "15:00",
+    "15:30",
+    "16:00",
+    "16:30",
+    "17:00",
+    "17:30"
+  ]
 
-  def date_three_month_end
-    errors.add(:date, "は3ヶ月以降の日付は選択できません") if (Date.current >> 3) < date
-  end
+  SATURDAY_TIMES = [
+    "11:00",
+    "11:30",
+    "13:00",
+    "13:30",
+    "14:00",
+    "14:30",
+    "15:00"
+  ]
 
-  def self.time_slots_after_three_month_with_fp(financial_planner_id)
-    time_slots = TimeSlot.all.where("date >= ?", Date.today).where("date < ?", Date.today >> 3).where("financial_planner_id = ?", financial_planner_id).order(date: :desc)
-    time_slots_data = []
-    time_slots .each do |slot|
-      time_slots_hash = {}
-      time_slots_hash.merge!(date: slot.date.strftime("%Y-%m-%d"), start_time: slot.start_time, is_available: slot.is_available)
-      time_slots_data.push(time_slots_hash)
+  EXCLUDE_TIMES = [
+    "10:00",
+    "10:30",
+    "15:30",
+    "16:00",
+    "16:30",
+    "17:00",
+    "17:30"
+  ]
+
+  def self.time_slots_after_three_month(financial_planner_id)
+    time_slots = TimeSlot.all.where("date >= ?", Date.today).where("date < ?", Date.today + 3.months).where("financial_planner_id = ?", financial_planner_id).where("is_available = ?", true).order(date: :desc)
+    time_slots_hash = {}
+    time_slots.each do |slot|
+      key = [slot.date.strftime("%Y-%m-%d"), slot.start_time].join("_")
+      time_slots_hash[key] = {date: slot.date.strftime("%Y-%m-%d"), start_time: slot.start_time}
     end
-    time_slots_data
+    time_slots_hash
   end
 
-  def self.time_slots_after_three_month
-    time_slots = TimeSlot.all.where("date >= ?", Date.today).where("date < ?", Date.today >> 3).order(date: :desc)
-    time_slots_data = []
-    time_slots .each do |slot|
-      time_slots_hash = {}
-      time_slots_hash.merge!(date: slot.date.strftime("%Y-%m-%d"), start_time: slot.start_time, is_available: slot.is_available)
-      time_slots_data.push(time_slots_hash)
+  def self.time_slot_available?(time_slots, date, start_time)
+    key = [date, start_time].join("_")
+    time_slots.key?(key)
+  end
+
+  def self.available_time_with_date(date, financial_planner_id)
+    time_slots = TimeSlot.all.where(date: date, financial_planner_id: financial_planner_id)
+    slot_times = []
+    time_slots.each do |slot|
+      slot_times.push(slot.start_time)
     end
-    time_slots_data
+    slot_times
   end
 
   def self.check_reservation_day(day)

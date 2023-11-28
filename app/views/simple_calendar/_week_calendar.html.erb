@@ -9,7 +9,7 @@
       <span class="calendar-title"><%= t('simple_calendar.week', default: '1週間') %></span>
     <% end %>
     <%= link_to t('simple_calendar.next', default: '翌週'), calendar.url_for_next_view %>
-    <% time_slots = TimeSlot.time_slots_after_three_month_with_fp(current_financial_planner.id) %>
+    <% time_slots = TimeSlot.time_slots_after_three_month(current_financial_planner.id) %>
   </div>
   <table class="table table-striped">
     <thead>
@@ -34,18 +34,18 @@
             <% end %>
           <% end %>
         </tr>
-        <% ap_times.each do |time| %>
+        <% TimeSlot::SLOT_TIMES.each do |time| %>
           <tr>
             <td><%= time %></td>
             <% week.each do |day| %>
               <td>
                 <% if day.wday != 0 %>
-                  <% if day.wday == 6 && exclude_times.include?(time)%>
+                  <% if day.wday == 6 && TimeSlot::EXCLUDE_TIMES.include?(time)%>
                     <%= '×' %>
-                  <% elsif check_reservation(time_slots, day, time) %>
+                  <% elsif TimeSlot.time_slot_available?(time_slots, day, time) %>
                     <%= '出勤' %>
                   <% else %>
-                    <%= link_to new_time_slots_path(date: day, start_time: time) do %>
+                    <%= link_to financial_planner_time_slot_path(date: day, start_time: time, financial_planner_id: current_financial_planner.id), data: { turbo_method: :post } do %>
                       <%= '○' %>
                     <% end %>
                   <% end %>

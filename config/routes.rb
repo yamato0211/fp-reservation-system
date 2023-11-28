@@ -15,11 +15,10 @@ Rails.application.routes.draw do
   }
 
   resources :users
-  resources :financial_planners
-  resource :time_slots
-
-  # カスタムルートを追加
-  delete 'time_slots/destroy_all', to: 'time_slots#destroy_all', as: 'destroy_all_time_slots'
+  resources :financial_planners do
+    resource :time_slots, controller: 'time_slots'
+    resource :time_slot, controller: 'time_slot'
+  end
 
   root 'top#index'
 end
