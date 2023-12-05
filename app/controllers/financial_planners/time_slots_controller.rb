@@ -8,9 +8,9 @@ module FinancialPlanners
       time_slots.each do |slot|
         slot.destroy!
       end 
-      redirect_to financial_planners_path, flash: { success: "削除完了" }
+      redirect_to financial_planners_url, flash: { success: "削除完了" }
     rescue ActiveRecord::RecordInvalid => e
-      redirect_to financial_planners_path, flash: { warning: e.record.errors[:date][0] }
+      redirect_to financial_planners_url, flash: { warning: e.record.errors[:date][0] }
     end
 
     def create
@@ -26,9 +26,9 @@ module FinancialPlanners
       end
   
       TimeSlot.import! time_slots_to_insert
-      redirect_to financial_planners_path, flash: { success: "登録完了" }
+      redirect_to financial_planners_url, flash: { success: "登録完了" }
     rescue ActiveRecord::RecordInvalid => e
-      redirect_to financial_planners_path, flash: { warning: e.record.errors[:date][0] }
+      redirect_to financial_planners_url, flash: { warning: e.record.errors[:date][0] }
     end
 
     private
