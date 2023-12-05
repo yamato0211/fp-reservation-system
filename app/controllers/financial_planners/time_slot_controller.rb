@@ -3,7 +3,9 @@ module FinancialPlanners
     before_action :authenticate_financial_planner!
 
     def create
-      time_slot = TimeSlot.new(time_slot_params)
+      date = params[:date]
+      start_time = params[:start_time]
+      time_slot = TimeSlot.new(date: date.to_date, financial_planner_id: current_financial_planner.id, start_time: start_time)
       time_slot.save!
       redirect_to financial_planners_path, flash: { success: "登録完了" }
     rescue ActiveRecord::RecordInvalid => e
@@ -13,7 +15,7 @@ module FinancialPlanners
     private
 
     def time_slot_params
-      params.permit(:date, :start_time, :financial_planner_id)
+      params.permit(:date, :start_time)
     end
   end
 end

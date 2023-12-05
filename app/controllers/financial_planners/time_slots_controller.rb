@@ -4,8 +4,7 @@ module FinancialPlanners
 
     def destroy
       date = params[:date]
-      financial_planner_id = params[:financial_planner_id]
-      time_slots = TimeSlot.where(date: date.to_date, financial_planner_id: financial_planner_id)
+      time_slots = current_financial_planner.time_slots.where(date: date.to_date)
       time_slots.each do |slot|
         slot.destroy!
       end 
@@ -16,7 +15,7 @@ module FinancialPlanners
 
     def create
       date = params[:date].to_date
-      financial_planner_id = params[:financial_planner_id]
+      financial_planner_id = current_financial_planner.id
 
       time_slot = TimeSlot.new(date: date, financial_planner_id: financial_planner_id)
       times = TimeSlot.available_time_with_date(date, financial_planner_id)
@@ -35,7 +34,7 @@ module FinancialPlanners
     private
 
     def time_slot_params
-      params.require(:time_slot).permit(:date, :start_time, :financial_planner_id)
+      params.require(:time_slot).permit(:date, :start_time)
     end
   end
 end

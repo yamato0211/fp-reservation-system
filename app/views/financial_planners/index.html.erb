@@ -27,10 +27,10 @@
       <%= week_calendar(number_of_weeks: 1) do |date| %>
         <% if date.wday != 0 %>
           <%= link_to financial_planner_time_slots_path(date: date, financial_planner_id: current_financial_planner.id), data: { turbo_method: :post, turbo_confirm: '終日登録しますか？' } do %>
-            <%= date.day %>
+            <%= date.strftime("%m/%d") %>
           <% end %>
         <% else %>
-          <%= date.day %>
+          <%= date.strftime("%m/%d") %>
         <% end %>
         <br>
         <% if date.wday != 0 %>
