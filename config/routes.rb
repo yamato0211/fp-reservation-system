@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'appointments/new'
+  get 'time_slot/new'
   devise_for :financial_planners, controllers: {
     confirmations: 'financial_planners/confirmations',
     registrations: 'financial_planners/registrations',
@@ -12,9 +14,11 @@ Rails.application.routes.draw do
     passwords: 'users/passwords'
   }
 
-  resources :users, only: [:index]
-  resources :financial_planners, only: [:index]
-  resources :signup
+  resources :users
+  resources :financial_planners do
+    resource :time_slots, module: :financial_planners
+    resources :time_slot, module: :financial_planners
+  end
 
   root 'top#index'
 end

@@ -1,0 +1,62 @@
+<!--_week_calendar.html.erb -->
+
+<div class="simple-calendar">
+  <div class="calendar-heading">
+    <%= link_to t('simple_calendar.previous', default: '前週'), calendar.url_for_previous_view %>
+    <% if calendar.number_of_weeks == 1 %>
+      <span class="calendar-title"><%= t('simple_calendar.week', default: '1週間') %></span>
+    <% else %>
+      <span class="calendar-title"><%= t('simple_calendar.week', default: '1週間') %></span>
+    <% end %>
+    <%= link_to t('simple_calendar.next', default: '翌週'), calendar.url_for_next_view %>
+    <% time_slots = TimeSlot.time_slots_after_three_month(current_financial_planner.id) %>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>時間</th>
+        <% date_range.slice(0, 7).each do |day| %>
+          <th><%= t('date.abbr_day_names')[day.wday] %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% date_range.each_slice(7) do |week| %>
+        <tr>
+          <td></td>
+          <% week.each do |day| %>
+            <%= content_tag :td, class: calendar.td_classes_for(day) do %>
+              <% if defined?(Haml) && respond_to?(:block_is_haml?) && block_is_haml?(passed_block) %>
+                <% capture_haml(day, sorted_events.fetch(day, []), &passed_block) %>
+              <% else %>
+                <% passed_block.call day, sorted_events.fetch(day, []) %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </tr>
+        <% TimeSlot::SLOT_TIMES.each do |time| %>
+          <tr>
+            <td><%= time %></td>
+            <% week.each do |day| %>
+              <td>
+                <% if day.wday != 0 %>
+                  <% if day.wday == 6 && TimeSlot::EXCLUDE_TIMES.include?(time)%>
+                    <%= '×' %>
+                  <% elsif TimeSlot.time_slot_available?(time_slots, day, time) %>
+                    <%= '出勤' %>
+                  <% else %>
+                    <%= link_to financial_planner_time_slot_index_path(date: day, start_time: time, financial_planner_id: current_financial_planner.id), data: { turbo_method: :post } do %>
+                      <%= '○' %>
+                    <% end %>
+                  <% end %>
+                <% else %>
+                  <%= '×' %>
+                <% end %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
