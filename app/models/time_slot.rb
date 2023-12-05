@@ -1,31 +1,3 @@
-class CreateTimeSlotValidator < ActiveModel::Validator
-  def validate(record)
-    if record.date.before?(Date.current)
-      record.errors.add :date, "過去の日付は選択できません。正しい日付を選択してください。"
-    end
-    if record.date.before?(Date.current + 1)
-      record.errors.add :date, "当日は選択できません。正しい日付を選択してください。"
-    end
-    if record.date.after?(Date.current + 3.months)
-      record.errors.add :date, "は3ヶ月以降の日付は選択できません。"
-    end
-  end
-end
-
-class DeleteTimeSlotValidator < ActiveModel::Validator
-  def validate(record)
-    if record.date.before?(Date.current)
-      record.errors.add :date, "過去の日付は選択できません。正しい日付を選択してください。"
-    end
-    if record.date.before?(Date.current + 1)
-      record.errors.add :date, "当日の予定は削除できません。"
-    end
-    if record.date.after?(Date.current + 3.months)
-      record.errors.add :date, "は3ヶ月以降の日付は選択できません。"
-    end
-  end
-end
-
 class TimeSlot < ApplicationRecord
   belongs_to :financial_planner
   has_one :appointment
@@ -36,49 +8,23 @@ class TimeSlot < ApplicationRecord
   validates :financial_planner_id, uniqueness: { scope: %i[date start_time] }
 
   # validates with
-  validates_with CreateTimeSlotValidator
-  validates_with DeleteTimeSlotValidator
+  validates_with TimeSlots::CreateTimeSlotValidator, on: :create
+  validates_with TimeSlots::DeleteTimeSlotValidator, on: :destroy
 
   # const
-  SLOT_TIMES = [
-    "10:00",
-    "10:30",
-    "11:00",
-    "11:30",
-    "13:00",
-    "13:30",
-    "14:00",
-    "14:30",
-    "15:00",
-    "15:30",
-    "16:00",
-    "16:30",
-    "17:00",
-    "17:30"
-  ]
+  SLOT_TIMES = %w(10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30)
+  
+  SATURDAY_TIMES = %w(11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00)
 
-  SATURDAY_TIMES = [
-    "11:00",
-    "11:30",
-    "13:00",
-    "13:30",
-    "14:00",
-    "14:30",
-    "15:00"
-  ]
+  EXCLUDE_TIMES = %w(10:00 10:30 15:30 16:00 16:30 17:00 17:30)
 
-  EXCLUDE_TIMES = [
-    "10:00",
-    "10:30",
-    "15:30",
-    "16:00",
-    "16:30",
-    "17:00",
-    "17:30"
-  ]
+  # scope 
+  scope :collect_date, -> { where("date >= ?", Date.today).where("date < ?", Date.today + 3.months) }
+  scope :is_available, -> { where(is_available: true) }
+  scope :desc, -> { order(date: :desc) }
 
   def self.time_slots_after_three_month(financial_planner_id)
-    time_slots = TimeSlot.all.where("date >= ?", Date.today).where("date < ?", Date.today + 3.months).where("financial_planner_id = ?", financial_planner_id).where("is_available = ?", true).order(date: :desc)
+    time_slots = TimeSlot.all.collect_date.where(financial_planner_id: financial_planner_id).is_available.desc
     time_slots_hash = {}
     time_slots.each do |slot|
       key = [slot.date.strftime("%Y-%m-%d"), slot.start_time].join("_")
@@ -101,23 +47,24 @@ class TimeSlot < ApplicationRecord
     slot_times
   end
 
-  def self.check_reservation_day(day)
-    if day < Date.current
-      return "過去の日付は選択できません。正しい日付を選択してください。"
-    elsif day < (Date.current + 1)
-      return "当日は選択できません。正しい日付を選択してください。"
-    elsif (Date.current >> 3) < day
-      return "3ヶ月以降の日付は選択できません。正しい日付を選択してください。"
+  def self.available_appointment_time_slots
+    time_slots = TimeSlot.select('DISTINCT date, start_time').collect_date.is_available.desc
+    time_slots_hash = {}
+    time_slots.map do |time_slot|
+      key = [slot.date.strftime("%Y-%m-%d"), slot.start_time].join("_")
+      time_slots_hash[key] = { date: time_slot.date.strftime("%Y-%m-%d"), start_time: time_slot.start_time }
     end
+    time_slots_hash
   end
 
-  def self.check_delete_day(day)
-    if day < Date.current
-      return "過去の日付は選択できません。正しい日付を選択してください。"
-    elsif day < (Date.current + 1)
-      return "当日の予定は削除できません。"
-    elsif (Date.current >> 3) < day
-      return "3ヶ月以降の日付は選択できません。正しい日付を選択してください。"
-    end
+  def self.appointment_time_slot_available?(time_slots, date, start_time)
+    key = [date, start_time].join("_")
+    time_slots.key?(key)
+  end
+
+  def self.pre_register_time_slot(date, start_time)
+    time_slots = TimeSlot.all().where(date: date, start_time: start_time, is_available: true)
+    rand_num = rand(time_slots.count)
+    time_slots[rand_num]
   end
 end

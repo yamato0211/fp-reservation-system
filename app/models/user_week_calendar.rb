@@ -1,9 +1,7 @@
-class SimpleCalendar::UserWeekCalendar < SimpleCalendar::Calendar
-  # def to_partial_path
-  #   'simple_calendar/user_week_calendar'
-  # end
-
-  private
+class SimpleCalendar::UserWeekCalendar < SimpleCalendar::WeekCalendar
+  def to_partial_path
+    'simple_calendar/user_week_calendar'
+  end
 
   def date_range
     beginning = start_date.beginning_of_week + 1.day

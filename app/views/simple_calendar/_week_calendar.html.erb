@@ -45,7 +45,7 @@
                   <% elsif TimeSlot.time_slot_available?(time_slots, day, time) %>
                     <%= '出勤' %>
                   <% else %>
-                    <%= link_to financial_planner_time_slot_path(date: day, start_time: time, financial_planner_id: current_financial_planner.id), data: { turbo_method: :post } do %>
+                    <%= link_to financial_planner_time_slot_index_path(date: day, start_time: time, financial_planner_id: current_financial_planner.id), data: { turbo_method: :post } do %>
                       <%= '○' %>
                     <% end %>
                   <% end %>

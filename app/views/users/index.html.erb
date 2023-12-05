@@ -11,7 +11,7 @@
       <p>3ヶ月先まで登録することができます。</p>
     </div>
     <div class="col-12 mt-3">
-      <%= render SimpleCalendar::UserWeekCalendar.new(self, number_of_weeks: 1), partial: 'simple_calendar/user_week_calendar' do |date| %>
+      <%= render SimpleCalendar::UserWeekCalendar.new(self) do |date| %>
         <%= date.day %>
       <% end %>
     </div>
