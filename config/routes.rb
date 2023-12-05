@@ -16,8 +16,8 @@ Rails.application.routes.draw do
 
   resources :users
   resources :financial_planners do
-    resource :time_slots
-    resources :time_slot
+    resource :time_slots, module: :financial_planners
+    resources :time_slot, module: :financial_planners
   end
 
   root 'top#index'
