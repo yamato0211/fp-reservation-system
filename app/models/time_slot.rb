@@ -23,53 +23,55 @@ class TimeSlot < ApplicationRecord
   scope :is_available, -> { where(is_available: true) }
   scope :desc, -> { order(date: :desc) }
 
-  def self.time_slots_after_three_month(financial_planner_id)
-    time_slots = TimeSlot.all.collect_date.where(financial_planner_id:).desc
-    time_slots_hash = {}
-    time_slots.each do |slot|
-      key = [slot.date.strftime('%Y-%m-%d'), slot.start_time].join('_')
-      time_slots_hash[key] = { date: slot.date.strftime('%Y-%m-%d'), start_time: slot.start_time }
+  class << self
+    def time_slots_after_three_month(financial_planner_id)
+      time_slots = TimeSlot.all.collect_date.where(financial_planner_id:).desc
+      time_slots_hash = {}
+      time_slots.each do |slot|
+        key = [slot.date.strftime('%Y-%m-%d'), slot.start_time].join('_')
+        time_slots_hash[key] = { date: slot.date.strftime('%Y-%m-%d'), start_time: slot.start_time }
+      end
+      time_slots_hash
     end
-    time_slots_hash
-  end
 
-  def self.time_slot_available?(time_slots, date, start_time)
-    key = [date, start_time].join('_')
-    time_slots.key?(key)
-  end
-
-  def self.available_time_with_date(date, financial_planner_id)
-    time_slots = TimeSlot.all.where(date:, financial_planner_id:)
-    slot_times = []
-    time_slots.each do |slot|
-      slot_times.push(slot.start_time)
+    def time_slot_available?(time_slots, date, start_time)
+      key = [date, start_time].join('_')
+      time_slots.key?(key)
     end
-    slot_times
-  end
 
-  def self.available_appointment_time_slots
-    time_slots = TimeSlot.select('DISTINCT date, start_time').collect_date.is_available.desc
-    time_slots_hash = {}
-    time_slots.map do |slot|
-      key = [slot.date.strftime('%Y-%m-%d'), slot.start_time].join('_')
-      time_slots_hash[key] = { date: slot.date.strftime('%Y-%m-%d'), start_time: slot.start_time }
+    def available_time_with_date(date, financial_planner_id)
+      time_slots = TimeSlot.all.where(date:, financial_planner_id:)
+      slot_times = []
+      time_slots.each do |slot|
+        slot_times.push(slot.start_time)
+      end
+      slot_times
     end
-    time_slots_hash
-  end
 
-  def self.appointment_time_slot_available?(time_slots, date, start_time)
-    key = [date, start_time].join('_')
-    time_slots.key?(key)
-  end
+    def available_appointment_time_slots
+      time_slots = TimeSlot.select('DISTINCT date, start_time').collect_date.is_available.desc
+      time_slots_hash = {}
+      time_slots.map do |slot|
+        key = [slot.date.strftime('%Y-%m-%d'), slot.start_time].join('_')
+        time_slots_hash[key] = { date: slot.date.strftime('%Y-%m-%d'), start_time: slot.start_time }
+      end
+      time_slots_hash
+    end
 
-  def self.pre_register_time_slot(date, start_time)
-    time_slots = TimeSlot.all.where(date:, start_time:, is_available: true)
-    rand_num = rand(time_slots.count)
-    time_slots[rand_num]
-  end
+    def appointment_time_slot_available?(time_slots, date, start_time)
+      key = [date, start_time].join('_')
+      time_slots.key?(key)
+    end
 
-  def self.is_available_slot?(time_slot_id)
-    slot = TimeSlot.find(time_slot_id)
-    slot.is_available
+    def pre_register_time_slot(date, start_time)
+      time_slots = TimeSlot.all.where(date:, start_time:, is_available: true)
+      rand_num = rand(time_slots.count)
+      time_slots[rand_num]
+    end
+
+    def is_available_slot?(time_slot_id)
+      slot = TimeSlot.find(time_slot_id)
+      slot.is_available
+    end
   end
 end

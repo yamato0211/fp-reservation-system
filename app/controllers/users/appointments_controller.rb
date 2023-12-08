@@ -21,18 +21,11 @@ module Users
       slot = TimeSlot.find(time_slot_id)
       appointment = Appointment.new(user_id:, financial_planner_id: slot.financial_planner_id,
                                     time_slot_id: slot.id)
-      if appointment.save
-        slot.update(is_available: false)
-        redirect_to users_path, flash: { success: '仮予約が完了しました' }
-      else
-        redirect_to users_path, flash: { warning: '仮予約に失敗しました' }
-      end
-    end
-
-    private
-
-    def appointment_params
-      params.require(:appointment).permit(:date, :start_time, :time_slot_id)
+      appointment.save!
+      slot.update!(is_available: false)
+      redirect_to users_path, flash: { success: '仮予約が完了しました' }
+    rescue ActiveRecord::RecordNotFound, ActiveRecord::RecordInvalid => e
+      redirect_to users_path, flash: { warning: '仮予約に失敗しました' }
     end
   end
 end

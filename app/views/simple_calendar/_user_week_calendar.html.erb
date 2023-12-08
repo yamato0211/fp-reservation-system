@@ -8,7 +8,6 @@
     <% end %>
     <%= link_to t('simple_calendar.next', default: '翌週'), user_week_calendar.url_for_next_view %>
     <% time_slots = TimeSlot.available_appointment_time_slots %>
-    <% p user_week_calendar.date_range %>
   </div>
   <table class="table table-striped">
     <thead>
@@ -28,7 +27,7 @@
               <% if defined?(Haml) && respond_to?(:block_is_haml?) && block_is_haml?(passed_block) %>
                 <% capture_haml(day, sorted_events.fetch(day, []), &passed_block) %>
               <% else %>
-                <%# <% passed_block.call day, sorted_events.fetch(day, []) %> 
+                <%= day.strftime("%m/%d") %>
               <% end %>
             <% end %>
           <% end %>

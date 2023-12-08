@@ -10,22 +10,22 @@ class Appointment < ApplicationRecord
   validates :time_slot_id, presence: true, uniqueness: true
 
   scope :desc, -> { order(created_at: :desc) }
-  scope :pending, -> { where(status: :pending) }
-  scope :confirmed, -> { where(status: :confirmed) }
 
-  def self.get_pre_appointments_with_financial_planner_id(financial_planner_id)
-    Appointment.all.where(financial_planner_id:).pending.desc
-  end
+  class << self
+    def get_pre_appointments_with_financial_planner_id(financial_planner_id)
+      Appointment.all.where(financial_planner_id:).pending.desc
+    end
 
-  def self.get_appointments_with_financial_planner_id(financial_planner_id)
-    Appointment.all.where(financial_planner_id:).confirmed.desc
-  end
+    def get_appointments_with_financial_planner_id(financial_planner_id)
+      Appointment.all.where(financial_planner_id:).confirmed.desc
+    end
 
-  def self.get_appointments_with_user_id(user_id)
-    Appointment.all.where(user_id:).confirmed.desc
-  end
+    def get_appointments_with_user_id(user_id)
+      Appointment.all.where(user_id:).confirmed.desc
+    end
 
-  def self.get_pre_appointments_with_user_id(user_id)
-    Appointment.all.where(user_id:).pending.desc
+    def get_pre_appointments_with_user_id(user_id)
+      Appointment.all.where(user_id:).pending.desc
+    end
   end
 end
