@@ -7,6 +7,8 @@
       <span class="calendar-title"><%= t('simple_calendar.week', default: '1週間') %></span>
     <% end %>
     <%= link_to t('simple_calendar.next', default: '翌週'), user_week_calendar.url_for_next_view %>
+    <% time_slots = TimeSlot.available_appointment_time_slots %>
+    <% p user_week_calendar.date_range %>
   </div>
   <table class="table table-striped">
     <thead>
@@ -26,11 +28,33 @@
               <% if defined?(Haml) && respond_to?(:block_is_haml?) && block_is_haml?(passed_block) %>
                 <% capture_haml(day, sorted_events.fetch(day, []), &passed_block) %>
               <% else %>
-                <% passed_block.call day, sorted_events.fetch(day, []) %>
+                <%# <% passed_block.call day, sorted_events.fetch(day, []) %> 
               <% end %>
             <% end %>
           <% end %>
         </tr>
+        <% TimeSlot::SLOT_TIMES.each do |time| %>
+          <tr>
+            <td><%= time %></td>
+            <% week.each do |day| %>
+              <td>
+                <% if day.wday != 0 %>
+                  <% if day.wday == 6 && TimeSlot::EXCLUDE_TIMES.include?(time)%>
+                    <%= '×' %>
+                  <% elsif TimeSlot.appointment_time_slot_available?(time_slots, day, time) %>
+                    <%= link_to new_user_appointment_path(date: day, start_time: time, user_id: current_user.id) do %>
+                      <%= '◯' %>
+                    <% end %>
+                  <% else %>
+                    <%= '×' %>
+                  <% end %>
+                <% else %>
+                  <%= '×' %>
+                <% end %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
       <% end %>
     </tbody>
   </table>

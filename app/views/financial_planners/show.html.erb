@@ -1,0 +1,49 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <%= link_to 'ホーム', financial_planners_path, class: 'navbar-brand' %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <%= link_to 'マイページ', financial_planner_path(current_financial_planner.id), class: 'nav-link' %>
+        </li>
+        <li class="nav-item">
+          <%= link_to t("ログアウト"), destroy_financial_planner_session_path, class: 'nav-link', data: { turbo_method: :delete } %>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-6">
+      <h2>仮予約一覧</h2>
+      <% @pre_appointments.each do |ap| %>
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">受講者 : <%= ap.user.name %></h5>
+            <p class="card-text">メールアドレス : <%= ap.user.email %></p>
+            <p class="card-text">時間 : <%= ap.time_slot.date.strftime("%Y-%m-%d") %> <%= ap.time_slot.start_time %></p>
+            <%= link_to '予約を確定する', financial_planner_appointment_path(financial_planner_id: ap.financial_planner_id, appointment_id: ap.id), class: 'btn btn-primary', data: { turbo_method: :patch, turbo_confirm: '予約を確定しますか？' } %>
+            <%= link_to '予約を削除する', financial_planner_appointment_path(financial_planner_id: ap.financial_planner_id, appointment_id: ap.id), class: 'btn btn-danger', data: { turbo_method: :delete, turbo_confirm: '予約を削除しますか？' } %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-md-6">
+      <h2>予約一覧</h2>
+      <% @appointments.each do |ap| %>
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">受講者 : <%= ap.user.name %></h5>
+            <p class="card-text">メールアドレス : <%= ap.user.email %></p>
+            <p class="card-text">時間 : <%= ap.time_slot.date.strftime("%Y-%m-%d") %> <%= ap.time_slot.start_time %></p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

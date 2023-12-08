@@ -75,10 +75,10 @@ group :test do
   gem 'webdrivers', require: !ENV['SELENIUM_DRIVER_URL']
 end
 
-gem 'devise'
-gem "simple_calendar", "~> 2.4"
-gem 'dartsass-sprockets'
-gem 'bootstrap', '~> 5.3.2'
-gem 'jquery-rails'
-gem 'toastr_rails'
 gem 'activerecord-import'
+gem 'bootstrap', '~> 5.3.2'
+gem 'dartsass-sprockets'
+gem 'devise'
+gem 'jquery-rails'
+gem 'simple_calendar', '~> 2.4'
+gem 'toastr_rails'

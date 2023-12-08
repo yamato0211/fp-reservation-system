@@ -4,8 +4,8 @@ class SimpleCalendar::UserWeekCalendar < SimpleCalendar::WeekCalendar
   end
 
   def date_range
-    beginning = start_date.beginning_of_week + 1.day
-    ending    = start_date.end_of_week - 1.day
+    beginning = start_date.beginning_of_week
+    ending    = start_date.end_of_week
     (beginning..ending).to_a
   end
 end

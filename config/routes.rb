@@ -14,10 +14,13 @@ Rails.application.routes.draw do
     passwords: 'users/passwords'
   }
 
-  resources :users
+  resources :users do
+    resources :appointments, module: :users
+  end
   resources :financial_planners do
     resource :time_slots, module: :financial_planners
     resources :time_slot, module: :financial_planners
+    resources :appointments, module: :financial_planners, only: %i[destroy update]
   end
 
   root 'top#index'
