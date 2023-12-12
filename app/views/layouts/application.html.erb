@@ -12,5 +12,18 @@
 
   <body>
     <%= yield %>
+
+    <%# ------ Toastr ----- %>
+    <% if flash.any? %>
+    <script type="text/javascript">
+        <% flash.each do |key, value| %>
+        <% key = "success" if key == "notice" %>
+        <% key = "error" if key == "alert" %>
+        <% key = "error" if key == "warn" %>
+        toastr['<%= key %>']('<%= value %>');
+        <% end %>
+    </script>
+    <% end %>
+    <%# ------ Toastr ----- %>
   </body>
 </html>

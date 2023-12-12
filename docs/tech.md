@@ -43,6 +43,10 @@
 - [RSpec](https://github.com/rspec/rspec-rails)
 - [Ruby on Rails のテストフレームワーク RSpec 事始め](https://qiita.com/tatsurou313/items/c923338d2e3c07dfd9ee)
 
+## Bulk
+- https://qiita.com/hiroki_tanaka/items/9ab7eb532fb71e83ffb6
+- https://api.rubyonrails.org/classes/ActiveRecord/Batches.html#method-i-in_batches
+
 ## Deploy
 - 正直なんでもいい
 - herokuとかrender.comみたいなPaaSでもいいし

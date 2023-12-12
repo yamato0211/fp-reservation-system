@@ -1,0 +1,50 @@
+<div class="container my-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h2 class="mb-3">Sing up</h2>
+
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'needs-validation' }) do |f| %>
+        <%= render "financial_planners/shared/error_messages", resource: resource %>
+
+        <div class="mb-3">
+          <%= f.label :name, class: 'form-label' %>
+          <%= f.text_field :name, autofocus: true, autocomplete: "name", class: 'form-control' %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :description, class: 'form-label' %>
+          <%= f.text_area :description, autofocus: true, autocomplete: "description", class: 'form-control', rows: 3 %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :qualification, class: 'form-label' %>
+          <%= f.text_area :qualification, autofocus: true, autocomplete: "qualification", class: 'form-control', rows: 3 %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :email, class: 'form-label' %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control' %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :password, class: 'form-label' %>
+          <% if @minimum_password_length %>
+            <em>(<%= @minimum_password_length %> characters minimum)</em>
+          <% end %>
+          <%= f.password_field :password, autocomplete: "new-password", class: 'form-control' %>
+        </div>
+
+        <div class="mb-4">
+          <%= f.label :password_confirmation, class: 'form-label' %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control' %>
+        </div>
+
+        <div class="d-grid gap-2">
+          <%= f.submit "Sign up", class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+
+      <%= render "financial_planners/shared/links" %>
+    </div>
+  </div>
+</div>
