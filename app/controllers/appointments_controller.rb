@@ -1,6 +1,6 @@
 class AppointmentsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
-  before_action :authenticate_financial_planner!, only: [:update, :destroy]
+  before_action :authenticate_user!, only: %i[new create]
+  before_action :authenticate_financial_planner!, only: %i[update destroy]
   before_action :set_appointment, only: %i[update destroy]
 
   def new
@@ -26,14 +26,14 @@ class AppointmentsController < ApplicationController
     appointment.save!
     slot.update!(is_available: false)
     redirect_to users_path, flash: { success: '仮予約が完了しました' }
-  rescue ActiveRecord::RecordNotFound, ActiveRecord::RecordInvalid => e
+  rescue ActiveRecord::RecordNotFound, ActiveRecord::RecordInvalid
     redirect_to users_path, flash: { warning: '仮予約に失敗しました' }
   end
 
   def update
     @appointment.update!(status: :confirmed)
     redirect_to financial_planners_url, flash: { success: '予約を確定しました' }
-  rescue ActiveRecord::RecordInvalid => e
+  rescue ActiveRecord::RecordInvalid
     redirect_to financial_planners_url, flash: { warning: '予約の確定に失敗しました' }
   end
 
@@ -42,9 +42,9 @@ class AppointmentsController < ApplicationController
       @appointment.time_slot.update!(is_available: true)
       @appointment.destroy!
     end
-    
+
     redirect_to financial_planners_url, flash: { success: '予約をキャンセルしました' }
-  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotDestroyed => e
+  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotDestroyed
     redirect_to financial_planners_url, flash: { warning: '予約のキャンセルに失敗しました' }
   end
 
@@ -52,8 +52,7 @@ class AppointmentsController < ApplicationController
 
   def set_appointment
     @appointment ||= Appointment.find(params[:appointment_id])
-  rescue ActiveRecord::RecordNotFound => e
+  rescue ActiveRecord::RecordNotFound
     redirect_to financial_planners_url, flash: { warning: '予約が見つかりませんでした' }
   end
 end
-

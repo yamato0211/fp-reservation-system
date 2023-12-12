@@ -1,4 +1,7 @@
 class Users::ConfirmationsController < Devise::ConfirmationsController
+  def show
+    super
+  end
   def new
     super
   end
@@ -7,9 +10,6 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
     super
   end
 
-  def show
-    super
-  end
 
   protected
 

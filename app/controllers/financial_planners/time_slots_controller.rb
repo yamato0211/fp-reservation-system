@@ -2,17 +2,6 @@ module FinancialPlanners
   class TimeSlotsController < ApplicationController
     before_action :authenticate_financial_planner!
 
-    def destroy
-      date = params[:date]
-      time_slots = current_financial_planner.time_slots.where(date: date.to_date)
-      time_slots.each do |slot|
-        slot.destroy!
-      end
-      redirect_to financial_planners_url, flash: { success: '削除完了' }
-    rescue ActiveRecord::RecordInvalid => e
-      redirect_to financial_planners_url, flash: { warning: e.record.errors[:date][0] }
-    end
-
     def create
       date = params[:date].to_date
       financial_planner_id = current_financial_planner.id
@@ -30,6 +19,17 @@ module FinancialPlanners
     rescue ActiveRecord::RecordInvalid => e
       redirect_to financial_planners_url, flash: { warning: e.record.errors[:date][0] }
     end
+    def destroy
+      date = params[:date]
+      time_slots = current_financial_planner.time_slots.where(date: date.to_date)
+      time_slots.each do |slot|
+        slot.destroy!
+      end
+      redirect_to financial_planners_url, flash: { success: '削除完了' }
+    rescue ActiveRecord::RecordInvalid => e
+      redirect_to financial_planners_url, flash: { warning: e.record.errors[:date][0] }
+    end
+
 
     private
 

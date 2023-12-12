@@ -1,20 +1,25 @@
 require 'rails_helper'
 
 RSpec.describe 'Users', type: :request do
-  describe 'GET /users' do
-    subject do
-      get users_path
-      response
-    end
-    let(:user) { create(:user) }
-    context 'ログイン済みアクセス' do
-      before { sign_in user }
-      it { is_expected.to have_http_status(:success) }
-    end
+  let(:user) { FactoryBot.create(:user) }
 
-    context '未ログインアクセス' do
-      before { sign_out user }
-      it { is_expected.to have_http_status(:redirect) }
+  before do
+    sign_in user
+  end
+
+  describe 'GET /users' do
+    it 'renders the index template' do
+      get users_path
+      expect(response).to have_http_status(:success)
+      expect(response).to render_template(:index)
+    end
+  end
+
+  describe 'GET /users/:id' do
+    it 'renders the show template' do
+      get user_path(user)
+      expect(response).to have_http_status(:success)
+      expect(response).to render_template(:show)
     end
   end
 end

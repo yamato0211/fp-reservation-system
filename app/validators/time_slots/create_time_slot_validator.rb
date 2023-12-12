@@ -1,6 +1,8 @@
 module TimeSlots
   class CreateTimeSlotValidator < ActiveModel::Validator
     def validate(record)
+      return unless record.date.present?
+
       if record.date.before?(Date.current)
         record.errors.add :date, '過去の日付は選択できません。正しい日付を選択してください。'
       elsif record.date.before?(Date.current + 1)

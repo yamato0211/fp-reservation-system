@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     passwords: 'users/passwords'
   }
 
-  resources :users 
+  resources :users
   resources :financial_planners do
     resource :time_slots, module: :financial_planners
     resources :time_slot, module: :financial_planners

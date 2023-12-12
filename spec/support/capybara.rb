@@ -1,6 +1,6 @@
 Capybara.register_driver :remote_chrome do |app|
-  url = ENV['SELENIUM_DRIVER_URL']
-  caps = ::Selenium::WebDriver::Remote::Capabilities.chrome(
+  url = ENV.fetch('SELENIUM_DRIVER_URL', nil)
+  caps = Selenium::WebDriver::Remote::Capabilities.chrome(
     'goog:chromeOptions' => {
       'args' => [
         'no-sandbox',
@@ -18,7 +18,7 @@ RSpec.configure do |config|
     driven_by :rack_test
   end
 
-  config.before(:each, type: :system, js: true) do
+  config.before(:each, :js, type: :system) do
     # driven_by :selenium_chrome_headless
     Capybara.server_host = IPSocket.getaddress(Socket.gethostname)
     Capybara.app_host = "http://#{Capybara.server_host}"

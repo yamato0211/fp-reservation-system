@@ -1,4 +1,7 @@
 class FinancialPlanners::UnlocksController < Devise::UnlocksController
+  def show
+    super
+  end
   def new
     super
   end
@@ -7,9 +10,6 @@ class FinancialPlanners::UnlocksController < Devise::UnlocksController
     super
   end
 
-  def show
-    super
-  end
 
   protected
 
