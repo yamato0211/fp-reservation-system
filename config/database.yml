@@ -56,7 +56,10 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: myapp_production
-  username: myapp
-  password: <%= ENV["MYAPP_DATABASE_PASSWORD"] %>
+   <<: *default
+   username: <%= Rails.application.credentials.planetscale&.fetch(:username) %>
+   password: <%= Rails.application.credentials.planetscale&.fetch(:password) %>
+   database: <%= Rails.application.credentials.planetscale&.fetch(:database) %>
+   host: <%= Rails.application.credentials.planetscale&.fetch(:host) %>
+   ssl_mode: verify_identity
+   sslca: "/etc/ssl/certs/ca-certificates.crt"
