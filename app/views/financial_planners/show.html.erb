@@ -27,8 +27,8 @@
             <h5 class="card-title">受講者 : <%= ap.user.name %></h5>
             <p class="card-text">メールアドレス : <%= ap.user.email %></p>
             <p class="card-text">時間 : <%= ap.time_slot.date.strftime("%Y-%m-%d") %> <%= ap.time_slot.start_time %></p>
-            <%= link_to '予約を確定する', financial_planner_appointment_path(financial_planner_id: ap.financial_planner_id, appointment_id: ap.id), class: 'btn btn-primary', data: { turbo_method: :patch, turbo_confirm: '予約を確定しますか？' } %>
-            <%= link_to '予約を削除する', financial_planner_appointment_path(financial_planner_id: ap.financial_planner_id, appointment_id: ap.id), class: 'btn btn-danger', data: { turbo_method: :delete, turbo_confirm: '予約を削除しますか？' } %>
+            <%= link_to '予約を確定する', appointment_path(appointment_id: ap.id), class: 'btn btn-primary', data: { turbo_method: :patch, turbo_confirm: '予約を確定しますか？' } %>
+            <%= link_to '予約を削除する', appointment_path(appointment_id: ap.id), class: 'btn btn-danger', data: { turbo_method: :delete, turbo_confirm: '予約を削除しますか？' } %>
           </div>
         </div>
       <% end %>

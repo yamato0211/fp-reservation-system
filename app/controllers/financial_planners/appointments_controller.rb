@@ -11,8 +11,10 @@ module FinancialPlanners
     end
 
     def destroy
+      # transaction
       @appointment.time_slot.update!(is_available: true)
       @appointment.destroy!
+      
       redirect_to financial_planners_url, flash: { success: '予約をキャンセルしました' }
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotDestroyed => e
       redirect_to financial_planners_url, flash: { warning: '予約のキャンセルに失敗しました' }

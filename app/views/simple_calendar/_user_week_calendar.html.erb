@@ -41,7 +41,7 @@
                   <% if day.wday == 6 && TimeSlot::EXCLUDE_TIMES.include?(time)%>
                     <%= '×' %>
                   <% elsif TimeSlot.appointment_time_slot_available?(time_slots, day, time) %>
-                    <%= link_to new_user_appointment_path(date: day, start_time: time, user_id: current_user.id) do %>
+                    <%= link_to new_appointment_path(date: day, start_time: time) do %>
                       <%= '◯' %>
                     <% end %>
                   <% else %>
