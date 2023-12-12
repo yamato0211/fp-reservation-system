@@ -23,8 +23,10 @@ class AppointmentsController < ApplicationController
     slot = TimeSlot.find(time_slot_id)
     appointment = Appointment.new(user_id:, financial_planner_id: slot.financial_planner_id,
                                   time_slot_id: slot.id)
-    appointment.save!
-    slot.update!(is_available: false)
+    ActiveRecord::Base.transaction do
+      appointment.save!
+      slot.update!(is_available: false)
+    end
     redirect_to users_path, flash: { success: '仮予約が完了しました' }
   rescue ActiveRecord::RecordNotFound, ActiveRecord::RecordInvalid
     redirect_to users_path, flash: { warning: '仮予約に失敗しました' }
