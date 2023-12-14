@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   def index; end
 
   def show
-    @appointments = Appointment.get_appointments_with_user_id(current_user.id)
-    @pre_appointments = Appointment.get_pre_appointments_with_user_id(current_user.id)
+    @appointments = current_user.appointments.confirmed.order(created_at: :desc)
+    @pre_appointments = current_user.appointments.pending.order(created_at: :desc)
   end
 end

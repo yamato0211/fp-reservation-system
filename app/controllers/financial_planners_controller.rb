@@ -4,7 +4,7 @@ class FinancialPlannersController < ApplicationController
   def index; end
 
   def show
-    @pre_appointments = Appointment.get_pre_appointments_with_financial_planner_id(current_financial_planner.id)
-    @appointments = Appointment.get_appointments_with_financial_planner_id(current_financial_planner.id)
+    @pre_appointments = current_financial_planner.appointments.pending.order(created_at: :desc)
+    @appointments = current_financial_planner.appointments.confirmed.order(created_at: :desc)
   end
 end
