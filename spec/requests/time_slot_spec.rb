@@ -10,7 +10,7 @@ RSpec.describe FinancialPlanners::TimeSlotController, type: :controller do
       end
 
       context 'with valid parameters' do
-        let(:valid_params) { { financial_planner_id: financial_planner.id, date: '2024-01-01', start_time: '10:00' } }
+        let(:valid_params) { { financial_planner_id: financial_planner.id, date: Date.today + 1.day, start_time: '10:00' } }
 
         it 'creates a new time slot' do
           expect {
@@ -44,7 +44,7 @@ RSpec.describe FinancialPlanners::TimeSlotController, type: :controller do
 
     context 'when the financial planner is not authenticated' do
       it 'redirects to the sign in page' do
-        post :create, params: { financial_planner_id: financial_planner.id, date: '2023-01-01', start_time: '10:00' }
+        post :create, params: { financial_planner_id: financial_planner.id, date: Date.today + 1.day, start_time: '10:00' }
         expect(response).to redirect_to(new_financial_planner_session_url)
       end
     end

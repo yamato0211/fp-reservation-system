@@ -60,7 +60,13 @@ class TimeSlot < ApplicationRecord
 
     def appointment_time_slot_available?(time_slots, date, start_time)
       key = [date, start_time].join('_')
-      time_slots.key?(key)
+      if date.saturday?
+        return SATURDAY_TIMES.include?(start_time) && time_slots.key?(key)
+      elsif date.sunday?
+        return false
+      else
+        return SLOT_TIMES.include?(start_time) && time_slots.key?(key)
+      end
     end
 
     def pre_register_time_slot(date, start_time)

@@ -8,7 +8,6 @@ class AppointmentsController < ApplicationController
     start_time = params[:start_time]
     slot = TimeSlot.pre_register_time_slot(date.to_date, start_time)
     if TimeSlot.is_available_slot?(slot.id)
-      @appointment = Appointment.new
       @financial_planner = FinancialPlanner.find(slot.financial_planner_id)
       @date_time = [slot.date.strftime('%Y-%m-%d'), slot.start_time].join(' ')
       @time_slot_id = slot.id

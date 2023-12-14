@@ -70,6 +70,8 @@ RSpec.describe AppointmentsController, type: :request do
 
       it 'does not update the appointment if the appointment is not found' do
         patch appointment_path(0), params: { appointment_id: 0 }
+        appointment.reload
+        expect(appointment.status).to eq('pending')
         expect(response).to redirect_to(financial_planners_url)
         expect(flash[:warning]).to eq('予約が見つかりませんでした')
       end

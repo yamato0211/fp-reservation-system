@@ -19,12 +19,19 @@ RSpec.describe TimeSlot, type: :model do
     describe '.time_slots_after_three_month' do
       let(:financial_planner) { FactoryBot.create(:financial_planner) }
       let!(:time_slot) { FactoryBot.create(:time_slot, financial_planner:) }
+      let!(:time_slot_after_three_month) { FactoryBot.create(:time_slot, financial_planner:, date: Date.current + 3.months) }
 
       it 'returns time slots for the next three months for a specific financial planner' do
         result = TimeSlot.time_slots_after_three_month(financial_planner.id)
         key = "#{time_slot.date.strftime('%Y-%m-%d')}_#{time_slot.start_time}"
         expect(result).to have_key(key)
         expect(result[key]).to eq({ date: time_slot.date.strftime('%Y-%m-%d'), start_time: time_slot.start_time })
+      end
+
+      it 'does not include time slots after three months' do
+        result = TimeSlot.time_slots_after_three_month(financial_planner.id)
+        key = "#{time_slot_after_three_month.date.strftime('%Y-%m-%d')}_#{time_slot_after_three_month.start_time}"
+        expect(result).not_to have_key(key)
       end
     end
 
@@ -61,10 +68,16 @@ RSpec.describe TimeSlot, type: :model do
     describe '.appointment_time_slot_available?' do
       let(:date) { Date.current }
       let(:start_time) { '10:00' }
+      let(:invalid_start_time) { '9:00' }
       let(:time_slots) { { "#{date}_#{start_time}" => { date:, start_time: } } }
+      let(:unavailable_time_slots) { { "#{date}_#{invalid_start_time}" => { date:, invalid_start_time: } } }
 
       it 'returns true if an appointment time slot is available' do
         expect(TimeSlot.appointment_time_slot_available?(time_slots, date, start_time)).to be true
+      end
+
+      it 'returns false if an appointment time slot is unavailable' do
+        expect(TimeSlot.appointment_time_slot_available?(unavailable_time_slots, date, invalid_start_time)).to be false
       end
     end
 
