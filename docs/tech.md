@@ -1,4 +1,5 @@
 # 技術選定
+ADRっぽいもの
 
 ## 環境構築
 - dockerで管理する
@@ -28,11 +29,10 @@
 ## 予約管理
 - よく見る予約アプリみたくカレンダーを描画して、その時間に◯×を表示して予約できるかをやりたい
 - simple_calender
-    - 見つけた。まんまこれ
     - [simple_calendar](https://github.com/excid3/simple_calendar)
     - [Railsのsimple_calendarをカスタマイズして時間帯で予約できる予約機能を作ってみた！](https://qiita.com/sssssatou/items/2e6606e3ddf9b246a0fb)
 
-## メール
+## メール(追加機能)
 - mailの送信はAction Mailerというものがデフォルトであるらしい、すごい
 - [Action Mailerの基礎](https://railsguides.jp/action_mailer_basics.html)
 - 公式のドキュメントにもあるくらいだし、これ使えってことなのかな
@@ -42,14 +42,27 @@
 - こちらは指定があったので、RSpecを使用する
 - [RSpec](https://github.com/rspec/rspec-rails)
 - [Ruby on Rails のテストフレームワーク RSpec 事始め](https://qiita.com/tatsurou313/items/c923338d2e3c07dfd9ee)
+- [FactoryBot](https://github.com/thoughtbot/factory_bot_rails)
+    - mockデータを作成するGem
+- [shoulda-matchers](https://github.com/thoughtbot/shoulda-matchers)
+    - model specのバリデーションなどのテストを簡単に検証できるGem
+## lint
+- [rubocop](https://github.com/rubocop/rubocop-rails)
 
 ## Bulk
 - https://qiita.com/hiroki_tanaka/items/9ab7eb532fb71e83ffb6
 - https://api.rubyonrails.org/classes/ActiveRecord/Batches.html#method-i-in_batches
 
 ## Deploy
-- 正直なんでもいい
-- herokuとかrender.comみたいなPaaSでもいいし
-- 自分が借りてるVPSにデプロイでも良いかなとか
-- 時間があったらCloudにデプロイしようかなGCP使いたい
-- DBは高そうだからRenderとかの無料で使えるやつにする予定
+- herokuとかrender.comみたいなPaaS
+- 自分が借りてるVPSにデプロイ
+- 時間があったらCloudにデプロイ,GCP使いたい
+- DBは高そうなので,Renderとかの無料で使えるやつにする予定 -> postgresしかなかった
+- DBはMySQLを無料で使える[PlanetScale](https://planetscale.com/)
+    - 無料枠があり、テーブルの可視化やレイテンシなどのメトリックス可視化も行ってくれる
+- RailsはRender.comにデプロイすることにした
+
+## CI
+- github actionsを使用する
+- RSpecとRubocopを回す(push: [main, develop], pull_requests: [main, develop])
+- アプリケーションの更新はmainにpush時にRenderが検知して自動でやってくれる
