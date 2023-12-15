@@ -56,6 +56,10 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem 'rubocop', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
+
   gem 'web-console'
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
@@ -69,16 +73,18 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem 'capybara'
   gem 'factory_bot_rails'
+  gem 'faker'
+  gem 'rails-controller-testing'
   gem 'rspec-rails'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'webdrivers', require: !ENV['SELENIUM_DRIVER_URL']
 end
 
-gem 'devise'
-gem "simple_calendar", "~> 2.4"
-gem 'dartsass-sprockets'
-gem 'bootstrap', '~> 5.3.2'
-gem 'jquery-rails'
-gem 'toastr_rails'
 gem 'activerecord-import'
+gem 'bootstrap', '~> 5.3.2'
+gem 'dartsass-sprockets'
+gem 'devise'
+gem 'jquery-rails'
+gem 'simple_calendar', '~> 2.4'
+gem 'toastr_rails'

@@ -7,6 +7,7 @@
       <span class="calendar-title"><%= t('simple_calendar.week', default: '1週間') %></span>
     <% end %>
     <%= link_to t('simple_calendar.next', default: '翌週'), user_week_calendar.url_for_next_view %>
+    <% time_slots = TimeSlot.available_appointment_time_slots %>
   </div>
   <table class="table table-striped">
     <thead>
@@ -31,6 +32,28 @@
             <% end %>
           <% end %>
         </tr>
+        <% TimeSlot::SLOT_TIMES.each do |time| %>
+          <tr>
+            <td><%= time %></td>
+            <% week.each do |day| %>
+              <td>
+                <% if day.wday != 0 %>
+                  <% if day.wday == 6 && TimeSlot::EXCLUDE_TIMES.include?(time)%>
+                    <%= '×' %>
+                  <% elsif TimeSlot.appointment_time_slot_available?(time_slots, day, time) %>
+                    <%= link_to new_appointment_path(date: day, start_time: time) do %>
+                      <%= '◯' %>
+                    <% end %>
+                  <% else %>
+                    <%= '×' %>
+                  <% end %>
+                <% else %>
+                  <%= '×' %>
+                <% end %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
       <% end %>
     </tbody>
   </table>

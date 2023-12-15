@@ -1,5 +1,5 @@
 module SimpleCalendar
-  class SimpleCalendar::UserWeekCalendar < SimpleCalendar::WeekCalendar
+  class UserWeekCalendar < SimpleCalendar::WeekCalendar
     def to_partial_path
       'simple_calendar/user_week_calendar'
     end
@@ -9,5 +9,6 @@ module SimpleCalendar
       ending    = start_date.end_of_week
       (beginning..ending).to_a
     end
-  end  
+  end
 end
+

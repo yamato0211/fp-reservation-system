@@ -45,7 +45,7 @@ routes:
 
 # rubocop auto correct
 lint-fix:
-	docker compose run web rubocop --auto-correct
+	docker compose run web rubocop --autocorrect
 
 # 'make generate'に続く引数をキャッチするための特別なターゲット
 %:

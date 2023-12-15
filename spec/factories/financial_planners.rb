@@ -3,7 +3,7 @@ FactoryBot.define do
     name { 'test' }
     description { 'test' }
     qualification { 'test' }
-    email { 'test@mail.com' }
+    email { Faker::Internet.unique.email }
     password { 'password' }
     password_confirmation { 'password' }
   end

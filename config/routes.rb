@@ -20,5 +20,7 @@ Rails.application.routes.draw do
     resources :time_slot, module: :financial_planners
   end
 
+  resources :appointments
+
   root 'top#index'
 end
