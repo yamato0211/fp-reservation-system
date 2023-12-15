@@ -3,7 +3,7 @@ module SimpleCalendar
     def to_partial_path
       'simple_calendar/user_week_calendar'
     end
-  
+
     def date_range
       beginning = start_date.beginning_of_week
       ending    = start_date.end_of_week
@@ -11,4 +11,3 @@ module SimpleCalendar
     end
   end
 end
-

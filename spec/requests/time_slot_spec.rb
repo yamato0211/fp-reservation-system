@@ -13,9 +13,9 @@ RSpec.describe FinancialPlanners::TimeSlotController, type: :controller do
         let(:valid_params) { { financial_planner_id: financial_planner.id, date: Date.today + 1.day, start_time: '10:00' } }
 
         it 'creates a new time slot' do
-          expect {
+          expect do
             post :create, params: valid_params
-          }.to change(TimeSlot, :count).by(1)
+          end.to change(TimeSlot, :count).by(1)
         end
 
         it 'redirects to the financial planners url with a success message' do
@@ -29,9 +29,9 @@ RSpec.describe FinancialPlanners::TimeSlotController, type: :controller do
         let(:invalid_params) { { financial_planner_id: financial_planner.id, date: nil, start_time: '10:00' } }
 
         it 'does not create a new time slot' do
-          expect {
+          expect do
             post :create, params: invalid_params
-          }.to_not change(TimeSlot, :count)
+          end.not_to change(TimeSlot, :count)
         end
 
         it 'redirects to the financial planners url with a warning message' do

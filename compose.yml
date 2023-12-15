@@ -30,9 +30,16 @@ services:
       SELENIUM_DRIVER_URL: http://selenium_chrome:4444/wd/hub
     depends_on:
       - db
-      - chrome
-  
-  chrome:    #Chromeでのテスト実行用コンテナ
-    image: selenium/standalone-chrome    #Chromeがインストールされたイメージ
+      - redis
+
+  redis:
+    image: redis:latest
     ports:
-      - '4444:4444'
+      - "6379:6379"
+    volumes:
+      - ./tmp/redis:/var/lib/redis
+  
+  # chrome:    #Chromeでのテスト実行用コンテナ
+  #   image: selenium/standalone-chrome    #Chromeがインストールされたイメージ
+  #   ports:
+  #     - '4444:4444'
