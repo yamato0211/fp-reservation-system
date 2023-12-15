@@ -13,6 +13,9 @@ module Myapp
     config.generators do |g|
       g.test_framework false
     end
+    config.active_job.queue_adapter = :sidekiq
+    config.active_record.default_timezone = :local
+    config.time_zone = 'Tokyo'
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

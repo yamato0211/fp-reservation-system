@@ -33,6 +33,7 @@ class AppointmentsController < ApplicationController
 
   def update
     @appointment.update!(status: :confirmed)
+    CreateMeetingJob.perform_later(@appointment.id)
     redirect_to financial_planners_url, flash: { success: '予約を確定しました' }
   rescue ActiveRecord::RecordInvalid
     redirect_to financial_planners_url, flash: { warning: '予約の確定に失敗しました' }

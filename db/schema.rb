@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_14_082329) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_15_063830) do
   create_table "appointments", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "financial_planner_id", null: false
@@ -18,8 +18,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_14_082329) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "status", default: 0, null: false
-    t.string "join_url"
-    t.string "start_url"
+    t.text "join_url"
+    t.text "start_url"
     t.index ["financial_planner_id"], name: "index_appointments_on_financial_planner_id"
     t.index ["time_slot_id"], name: "index_appointments_on_time_slot_id"
     t.index ["user_id"], name: "index_appointments_on_user_id"

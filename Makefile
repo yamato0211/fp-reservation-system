@@ -47,6 +47,10 @@ routes:
 lint-fix:
 	docker compose run web rubocop --autocorrect
 
+# sidekiq
+sidekiq:
+	docker compose run web bundle exec sidekiq
+
 # 'make generate'に続く引数をキャッチするための特別なターゲット
 %:
 	@:
