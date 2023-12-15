@@ -49,6 +49,8 @@ jobs:
         run: yarn install --check-files
 
       - name: Database create and migrate
+        env:
+          MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: |
           cp config/database.yml.ci config/database.yml
           bundle exec rails db:create RAILS_ENV=test
