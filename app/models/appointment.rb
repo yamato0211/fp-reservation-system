@@ -12,8 +12,6 @@ class Appointment < ApplicationRecord
   def formatted_datetime
     date = time_slot.date.strftime('%Y-%m-%d')
     time = time_slot.start_time
-    datetime_combined = "#{date}T#{time}:00"
-    formatted_datetime = DateTime.strptime(datetime_combined, '%Y-%m-%dT%H:%M:%S')
-    formatted_datetime.strftime('%Y-%m-%dT%H:%M:%S')
+    "#{date}T#{time}:00"
   end
 end
