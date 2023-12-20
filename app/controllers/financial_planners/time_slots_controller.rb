@@ -7,7 +7,7 @@ module FinancialPlanners
       financial_planner_id = current_financial_planner.id
 
       times = current_financial_planner.time_slots.where(date: date).pluck(:start_time)
-      available_times = date.saturday ? TimeSlot::SATURDAY_TIMES - times : TimeSlot::SLOT_TIMES - times
+      available_times = date.saturday? ? TimeSlot::SATURDAY_TIMES - times : TimeSlot::SLOT_TIMES - times
 
       time_slots_to_insert = available_times.map do |time|
         TimeSlot.new(date:, financial_planner_id:, start_time: time)

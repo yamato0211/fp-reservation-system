@@ -57,7 +57,7 @@ RSpec.describe AppointmentsController, type: :request do
   end
 
   describe 'PATCH #update' do
-    let(:appointment) { create(:appointment) }
+    let(:appointment) { create(:appointment, financial_planner: financial_planner) }
 
     context 'when financial planner is authenticated' do
       before { sign_in financial_planner }
@@ -88,7 +88,7 @@ RSpec.describe AppointmentsController, type: :request do
   end
 
   describe 'DELETE #destroy' do
-    let!(:appointment) { create(:appointment) }
+    let!(:appointment) { create(:appointment, financial_planner: financial_planner) }
 
     context 'when financial planner is authenticated' do
       before { sign_in financial_planner }
