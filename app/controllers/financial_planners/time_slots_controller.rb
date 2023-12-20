@@ -6,9 +6,8 @@ module FinancialPlanners
       date = params[:date].to_date
       financial_planner_id = current_financial_planner.id
 
-      time_slot = TimeSlot.new(date:, financial_planner_id:)
-      times = TimeSlot.available_time_with_date(date, financial_planner_id)
-      available_times = date.wday == 6 ? TimeSlot::SATURDAY_TIMES - times : TimeSlot::SLOT_TIMES - times
+      times = current_financial_planner.time_slots.where(date: date).pluck(:start_time)
+      available_times = date.saturday ? TimeSlot::SATURDAY_TIMES - times : TimeSlot::SLOT_TIMES - times
 
       time_slots_to_insert = available_times.map do |time|
         TimeSlot.new(date:, financial_planner_id:, start_time: time)
@@ -29,7 +28,6 @@ module FinancialPlanners
     rescue ActiveRecord::RecordInvalid => e
       redirect_to financial_planners_url, flash: { warning: e.record.errors[:date][0] }
     end
-
 
     private
 

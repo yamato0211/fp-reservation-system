@@ -23,6 +23,10 @@ class TimeSlot < ApplicationRecord
   scope :is_available, -> { where(is_available: true) }
   scope :desc, -> { order(date: :desc) }
 
+  def join_date_start_time
+    [date.strftime('%Y-%m-%d'), start_time].join(' ')
+  end
+
   class << self
     def time_slots_after_three_month(financial_planner_id)
       time_slots = TimeSlot.all.collect_date.where(financial_planner_id:).desc
