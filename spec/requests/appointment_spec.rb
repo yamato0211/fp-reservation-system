@@ -6,10 +6,10 @@ RSpec.describe AppointmentsController, type: :request do
 
   describe 'GET #new' do
     context 'when user is authenticated' do
-      before { 
-        sign_in user 
-        create(:time_slot, financial_planner: financial_planner, date: Date.today + 1.day, start_time: '10:00')
-      }
+      before do
+        sign_in user
+        create(:time_slot, financial_planner:, date: Date.today + 1.day, start_time: '10:00')
+      end
 
       it 'renders the new template' do
         get new_appointment_path(date: Date.today + 1.day, start_time: '10:00')
@@ -26,22 +26,23 @@ RSpec.describe AppointmentsController, type: :request do
   end
 
   describe 'POST #create' do
-    let!(:time_slot) { create(:time_slot, financial_planner: financial_planner, date: Date.today + 1.day, start_time: '10:00') }
+    let!(:time_slot) { create(:time_slot, financial_planner:, date: Date.today + 1.day, start_time: '10:00') }
+
     context 'when user is authenticated' do
       before { sign_in user }
 
       it 'creates a new appointment and redirects' do
-        expect {
+        expect do
           post appointments_path, params: { time_slot_id: time_slot.id }
-        }.to change(Appointment, :count).by(1)
+        end.to change(Appointment, :count).by(1)
         expect(response).to redirect_to(users_path)
         expect(flash[:success]).to eq('仮予約が完了しました')
       end
 
       it 'does not create a new appointment if the time slot is not available' do
-        expect {
+        expect do
           post appointments_path, params: { time_slot_id: nil }
-        }.to change(Appointment, :count).by(0)
+        end.to change(Appointment, :count).by(0)
         expect(response).to redirect_to(users_path)
         expect(flash[:warning]).to eq('仮予約に失敗しました')
       end
@@ -57,6 +58,7 @@ RSpec.describe AppointmentsController, type: :request do
 
   describe 'PATCH #update' do
     let(:appointment) { create(:appointment) }
+
     context 'when financial planner is authenticated' do
       before { sign_in financial_planner }
 
@@ -87,21 +89,22 @@ RSpec.describe AppointmentsController, type: :request do
 
   describe 'DELETE #destroy' do
     let!(:appointment) { create(:appointment) }
+
     context 'when financial planner is authenticated' do
       before { sign_in financial_planner }
 
       it 'destroys the appointment and redirects' do
-        expect {
+        expect do
           delete appointment_path(appointment), params: { appointment_id: appointment.id }
-        }.to change(Appointment, :count).by(-1)
+        end.to change(Appointment, :count).by(-1)
         expect(response).to redirect_to(financial_planners_url)
         expect(flash[:success]).to eq('予約をキャンセルしました')
       end
 
       it 'does not destroy the appointment if the appointment is not found' do
-        expect {
+        expect do
           delete appointment_path(0)
-        }.to change(Appointment, :count).by(0), params: { appointment_id: 0 }
+        end.to change(Appointment, :count).by(0), params: { appointment_id: 0 }
         expect(response).to redirect_to(financial_planners_url)
         expect(flash[:warning]).to eq('予約が見つかりませんでした')
       end

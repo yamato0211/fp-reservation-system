@@ -39,6 +39,7 @@
             <h5 class="card-title">講師 : <%= ap.financial_planner.name %></h5>
             <p class="card-text">メールアドレス : <%= ap.financial_planner.email %></p>
             <p class="card-text">時間 : <%= ap.time_slot.date.strftime("%Y-%m-%d") %> <%= ap.time_slot.start_time %></p>
+            <p class="card-text">リンク : <span><%= ap.join_url.nil? ? "" : link_to(ap.join_url, ap.join_url, target: "_blank") %></span></p>
           </div>
         </div>
       <% end %>

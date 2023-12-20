@@ -41,6 +41,7 @@
             <h5 class="card-title">受講者 : <%= ap.user.name %></h5>
             <p class="card-text">メールアドレス : <%= ap.user.email %></p>
             <p class="card-text">時間 : <%= ap.time_slot.date.strftime("%Y-%m-%d") %> <%= ap.time_slot.start_time %></p>
+            <p class="card-text">リンク : <span><%= ap.start_url.nil? ? "" : link_to(ap.start_url, ap.start_url, target: "_blank") %></span></p>
           </div>
         </div>
       <% end %>
