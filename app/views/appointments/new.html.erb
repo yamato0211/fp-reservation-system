@@ -1,2 +1,26 @@
-<h1>Appointments#new</h1>
-<p>Find me in app/views/appointments/new.html.erb</p>
+<div class="container">
+  <div class="row">
+    <div class="col-12 text-center title">
+      <h1>新規予約画面</h1>
+    </div>
+    <div class="col-12 mt-3 content">
+      <%= form_with(url: appointments_path, local: true) do |form| %>
+        <div class="day form-group">
+          <%= form.label :date_time, '実施時間' %>
+          <%= form.text_field :date_time, class: 'form-control', value: @time_slot.join_date_start_time, readonly: true %>
+        </div>
+        <div class="time form-group">
+          <%= form.label :name, '担当者' %>
+          <%= form.text_field :name, class: 'form-control', value: @time_slot.financial_planner.name, readonly: true %>
+        </div>
+        <%= form.hidden_field :time_slot_id, value: @time_slot.id %>
+        <div class="submit">
+          <%= form.submit '仮予約を確定する', class: 'btn btn-primary mx-auto d-block' %>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-12 text-right">
+      <%= link_to '戻る', users_path %>
+    </div>
+  </div>
+</div>

@@ -20,5 +20,11 @@ Rails.application.routes.draw do
     resources :time_slot, module: :financial_planners
   end
 
+  resources :appointments do
+    member do
+      patch :regenerate_url
+    end
+  end
+
   root 'top#index'
 end

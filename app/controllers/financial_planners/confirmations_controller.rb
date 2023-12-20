@@ -1,4 +1,7 @@
 class FinancialPlanners::ConfirmationsController < Devise::ConfirmationsController
+  def show
+    super
+  end
   def new
     super
   end
@@ -7,9 +10,6 @@ class FinancialPlanners::ConfirmationsController < Devise::ConfirmationsControll
     super
   end
 
-  def show
-    super
-  end
 
   protected
 

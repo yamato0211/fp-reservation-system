@@ -3,13 +3,13 @@ class Users::PasswordsController < Devise::PasswordsController
     super
   end
 
+  def edit
+    super
+  end
   def create
     super
   end
 
-  def edit
-    super
-  end
 
   def update
     super
